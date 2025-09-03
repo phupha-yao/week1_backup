@@ -1,0 +1,5 @@
+print("Please input a string: ", end="")
+user_input = input()
+print(user_input[::-1])
+print(user_input.upper())
+print(user_input.lower())
