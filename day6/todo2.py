@@ -17,9 +17,12 @@ def save_tasks(tasks):
 
 def add(task):
     tasks = load_tasks()
-    tasks.append({"task": task, "done": False})
-    save_tasks(tasks)
-    print(f"Added: {task}")
+    if dupe_check(task):
+        tasks.append({"task": task, "done": False})
+        save_tasks(tasks)
+        print(f"Added: {task}")
+    else:
+        print("Already added")
 
 def list():
     tasks = load_tasks()
@@ -27,7 +30,8 @@ def list():
         print("No tasks found.")
         return
     index = 1
-    for value in tasks:
+    sorted_tasks = sort_task(tasks)
+    for value in sorted_tasks:
         if value['done'] == True:
             status = "Done"
         else:
@@ -51,6 +55,17 @@ def mark_done(index):
         save_tasks(tasks)
     else:
         print("Not valid index")
+
+def dupe_check(task):
+    tasks = load_tasks()
+    for i in tasks:
+        if task == i['task']:
+            return False
+    return True
+
+def sort_task(tasks):
+    sorted_tasks = sorted(tasks, key=lambda t: (t["done"], t["task"].lower()))
+    return sorted_tasks
 
 def main():
     if len(sys.argv) < 2:
